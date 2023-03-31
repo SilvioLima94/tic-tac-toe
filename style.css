@@ -1,61 +1,142 @@
-#tictactoe-header {
-  margin: 40px 0;
-  text-align: center;
-  font-size: 2rem;
+:root {
+  --cell-size: 100px;
+  --mark-size: calc(var(--cell-size) * 0.9);
 }
 
-.score-board {
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-  /* border: 1px solid blue; */
-}
-
-.score-board div {
-  margin-top: 20px;
-  width: 100px;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid black;
-}
-
-.score-board span {
-  /* border: 1px solid green; */
-}
-
-.game-board {
-  width: 600px;
-  height: 600px;
-  margin: 0 auto;
-  background-color: #f1f5f9;
-  color: #17213f;
-  border: 6px solid #f1f5f9;
-  border-radius: 10px;
-
+.board {
+  height: 100vh;
   display: grid;
-  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-}
-
-.game-board div:nth-child(even) {
-  color: #f0abfc;
-}
-
-.box {
-  border: 6px solid #818cf8;
-  font-family: Helvetica;
-  font-weight: bold;
-  font-size: 4em;
-  display: flex;
   justify-content: center;
+  align-content: center;
+  grid-template-columns: repeat(3, auto);
+  justify-items: center;
   align-items: center;
 }
 
-.btn-container {
-  margin-top: 20px;
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border: 1px solid #8a5cf685;
   display: flex;
   justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Remove cell border */
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3) {
+  border-top: none;
+}
+
+.cell:nth-child(3n + 1) {
+  border-left: none;
+}
+
+.cell:nth-child(3n + 3) {
+  border-right: none;
+}
+
+.cell:nth-child(7),
+.cell:nth-child(8),
+.cell:last-child {
+  border-bottom: none;
+}
+/* End of remove cell border */
+
+.cell.x,
+.cell.circle {
+  cursor: not-allowed;
+}
+
+.cell.x::before,
+.cell.x::after,
+.cell.circle::before {
+  background-color: #8a5cf6;
+}
+
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after,
+.board.circle .cell:not(.x):not(.circle):hover::before {
+  background-color: #f3f4f6;
+}
+
+/* Marks 'X' on the cell */
+.cell.x::before,
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after {
+  content: "";
+  width: calc(var(--mark-size) * 0.15);
+  height: var(--mark-size);
+  position: absolute;
+}
+
+.cell.x::before,
+.board.x .cell:not(.x):not(.circle):hover::before {
+  transform: rotate(45deg);
+}
+
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::after {
+  transform: rotate(-45deg);
+}
+
+/* Marks 'O' on the cell */
+.cell.circle::before,
+.cell.cricle::after,
+.board.circle .cell:not(.x):not(.circle):hover::before,
+.board.circle .cell:not(.x):not(.circle):hover::after {
+  content: "";
+  border-radius: 50%;
+  position: absolute;
+}
+
+.cell.circle::before,
+.board.circle .cell:not(.x):not(.circle):hover::before {
+  width: var(--mark-size);
+  height: var(--mark-size);
+}
+
+.cell.circle::after,
+.board.cell.circle .cell:not(.x):not(.circle):hover::after {
+  width: calc(var(--mark-size) * 0.7);
+  height: calc(var(--mark-size) * 0.7);
+  background-color: white;
+}
+
+.winning-message {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #8a5cf6;
+  font-size: 5rem;
+}
+
+.winning-message button {
+  font-size: 3rem;
+  background-color: white;
+  border: 1px solid black;
+  padding: 0.25em 0.5em;
+  color: #695698;
+  cursor: pointer;
+}
+
+.winning-message button:hover {
+  background-color: #8a5cf6;
+  color: white;
+  border-color: white;
+}
+
+.winning-message.show {
+  display: flex;
 }
